@@ -1,3 +1,4 @@
+function NMDAmodel(modFreq)
 % WB model neuron with 2 synaptic current inputs
 % WB model is a point neuron so units are in densities (per cm^2 for
 % surface area)
@@ -32,8 +33,6 @@ v = vars(:,1);
 %n = vars(:,3);
 s1 = vars(:,4);
 s2 = vars(:,5);
-
-
 
 % determine spike times and interspike intervals
 [peaks, indxs]=findpeaks(v,'MINPEAKHEIGHT',-10);
@@ -80,6 +79,8 @@ function dvarsdt = modeleqs(t,vars)
     i_ext=0;  % external applied current to neuron
     
     % pre-synaptic spikes
+    T = 1/(modFreq/1000);
+
     T=50;       % period in msec of repetitive pre-synaptic spikes
     presyn_spike_width = 1.0; % (msec) if you choose a very slow synaptic rise time
     % constant, you may need to make presyn_spike_width longer to see
@@ -90,13 +91,13 @@ function dvarsdt = modeleqs(t,vars)
        q=0;
     end
 
-    % post-synaptic current 1
+    % post-synaptic current 1 ampa current
     g_syn1=0.195;   % max conductance  (mS/cm^2)
     tau_d1=2; tau_r1=0.5; % time constants for decay and rise of synaptic current (ms)
     
-    % post-synaptic current 2
+    % post-synaptic current 2 nmda currnet
     g_syn2=0.0;   % max conductance  (mS/cm^2)
-    tau_d2=10; tau_r2=1; % time constants for decay and rise of synaptic current (ms)
+    tau_d2=100; tau_r2=10; % time constants for decay and rise of synaptic current (ms)
 
        
     dvdt = (g_k*n^4*(v_k-v) + g_na*m_inf(v)^3*h*(v_na-v) + ...
@@ -109,3 +110,5 @@ function dvarsdt = modeleqs(t,vars)
     dvarsdt = [dvdt; dhdt; dndt; ds1dt; ds2dt];
 
 end
+
+end %% for function
