@@ -1,4 +1,4 @@
-function spiketimes = NMDAmodel(modFreq)
+function spiketimes = NMDAmodel(modFreq, g_syn2)
 % WB model neuron with 2 synaptic current inputs
 % WB model is a point neuron so units are in densities (per cm^2 for
 % surface area)
@@ -96,7 +96,8 @@ function dvarsdt = modeleqs(t,vars)
     tau_d1=2; tau_r1=0.5; % time constants for decay and rise of synaptic current (ms)
     
     % post-synaptic current 2 nmda currnet
-    g_syn2=0.0;   % max conductance  (mS/cm^2)
+    % g_syn2=0.100;   % max conductance  (mS/cm^2) % added this to function
+    % call instead
     tau_d2=100; tau_r2=10; % time constants for decay and rise of synaptic current (ms)
     % tau_d2 = 0; tau_r2 = 0; % set to 0 to test
        
