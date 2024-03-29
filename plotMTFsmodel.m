@@ -1,7 +1,7 @@
 function plotMTFsmodel()
 
 % what NMDA conductances do we want to use?
-g_syn2_list = [0 0.100];
+g_syn2_list = [0 0.200];
 
 % set params as the same we ran for the fMod
 fModStart = 16;
@@ -65,12 +65,12 @@ plot(log2(fMod), spikeCounts_NMDA(:), 'Color', '#2a9d8f');
 
 % label x axis ticks to show 3 tick labels
 xticks([log2(fMod(1)) log2(fMod(ceil(length(fMod)/2))) log2(fMod(end))]);
-xticklabels({num2str(fMod(1)) num2str(fMod(ceil(length(fMod)/2))) num2str(fMod(end))});
+xticklabels({num2str(fMod(1)) num2str(round(fMod(ceil(length(fMod)/2)))) num2str(fMod(end))});
 
 % label x and y axes
 xlabel('mod. freq. (Hz)')
 ylabel('# spikes');
-title('rate MTF')
+title('Rate MTF')
 
 legend('AMPA only', 'AMPA + NMDA'); % Add legend
 
@@ -85,31 +85,31 @@ ylim([0 1]);
 
 % label x axis ticks to show 3 tick labels
 xticks([log2(fMod(1)) log2(fMod(ceil(length(fMod)/2))) log2(fMod(end))]);
-xticklabels({num2str(fMod(1)) num2str(fMod(ceil(length(fMod)/2))) num2str(fMod(end))});
+xticklabels({num2str(fMod(1)) num2str(round(fMod(ceil(length(fMod)/2)))) num2str(fMod(end))});
 
 % label x and y axes
 xlabel('mod. freq. (Hz)')
 ylabel('vector strength');
-title('temporal MTF')
+title('Temporal MTF')
 hold off
 
 %% plot the phase
 subplot(1, 3, 3);
 
-% Create the third subplot space in the same 1x3 grid layout at position 3
+% create the third subplot space in the same 1x3 grid layout at position 3
 % and retrieve its position.
 subplotHandle = subplot(1, 3, 3);
 pos = get(subplotHandle, 'Position'); % Get the position to use for the polar axes
 
-% Now, delete the empty third Cartesian axes created by the previous `subplot` to make room for the polar plot
+% delete the empty third Cartesian axes created by the previous `subplot` to make room for the polar plot
 delete(subplotHandle);
 
-% Create the polar axes manually and place it where the last subplot would be
+% create the polar axes manually and place it where the last subplot would be
 pax = polaraxes('Position', pos);
 
-% Continue with your plotting as before
+% continue plot
 hold(pax, 'on');
-logFreqs = log2(fMod); % Ensure `fMod` is defined with your frequency data
+logFreqs = log2(fMod);
 
 for i = 1:length(phase_AMPA)
     polarplot(pax, phase_AMPA(i), logFreqs(i), 'o', 'MarkerEdgeColor', 'none', 'MarkerFaceColor', '#e76f51');

@@ -41,21 +41,25 @@ if ~isempty(indxs)
 end
 
 % plot output
-subplot(3,1,1);
-plot(t,v,'-k','Linewidth',2);
+subplot(4,1,1);
+plot(t,v,'Color', '#03045e','Linewidth',2);
 set(gca,'Fontsize',16);
 xlabel('t [ms]','Fontsize',20); ylabel('v [mV]','Fontsize',20);
 
-subplot(3,1,2)
-plot(t,s1,'-b','Linewidth',2)
+subplot(4,1,2)
+plot(t,s1,'Color','#0077b6','Linewidth',2)
 set(gca,'Fontsize',16);
-xlabel('t [ms]','Fontsize',20); ylabel('synapse 1 current gate','Fontsize',16);
+xlabel('t [ms]','Fontsize',20); ylabel('ampa current gate','Fontsize',16);
 
-subplot(3,1,3)
-plot(t,s2,'-r','Linewidth',2)
+subplot(4,1,3)
+plot(t,s2,'Color','#00b4d8','Linewidth',2)
 set(gca,'Fontsize',16);
-xlabel('t [ms]','Fontsize',20); ylabel('synapse 2 current gate','Fontsize',16);
+xlabel('t [ms]','Fontsize',20); ylabel('nmda current gate','Fontsize',16);
 
+subplot(4,1,4)
+plot(t,s1+s2,'Color','#90e0ef','Linewidth',2)
+set(gca,'Fontsize',16);
+xlabel('t [ms]','Fontsize',20); ylabel('summed current gate','Fontsize',16);
 
 function dvarsdt = modeleqs(t,vars)
 % WB model point neuron equations
@@ -71,7 +75,7 @@ function dvarsdt = modeleqs(t,vars)
     c=1; % membrane capacitance in microF/cm^2
     g_k=9;  % max conductance of K-dr current (mS/cm^2)
     g_na=35; % max conductance of Na current (mS/cm^2)
-    g_l=0.1; % max conductance of membrane leak current (mS/cm^2)
+    g_l=0.282; % max conductance of membrane leak current (mS/cm^2)
     v_k=-90; % reversal potential of K-dr current
     v_na=55; % reversal potential of Na current
     v_l=-65; % reversal potential of leak current
@@ -84,7 +88,7 @@ function dvarsdt = modeleqs(t,vars)
     % T=50;       % period in msec of repetitive pre-synaptic spikes
     presyn_spike_width = 1.0; % (msec) if you choose a very slow synaptic rise time
     % constant, you may need to make presyn_spike_width longer to see
-    % effects
+    % effects. this was initially 1 i changed it to 4. 
     if mod(t,T) <= presyn_spike_width && t > 10.0
        q=1;
     else
@@ -98,8 +102,7 @@ function dvarsdt = modeleqs(t,vars)
     % post-synaptic current 2 nmda currnet
     % g_syn2=0.100;   % max conductance  (mS/cm^2) % added this to function
     % call instead
-    tau_d2=100; tau_r2=10; % time constants for decay and rise of synaptic current (ms)
-    % tau_d2 = 0; tau_r2 = 0; % set to 0 to test
+    tau_d2=62; tau_r2=33; % time constants for decay and rise of synaptic current (ms)
        
     dvdt = (g_k*n^4*(v_k-v) + g_na*m_inf(v)^3*h*(v_na-v) + ...
            g_l*(v_l-v) - g_syn1*s1*v - g_syn2*s2*v +i_ext)/c;
