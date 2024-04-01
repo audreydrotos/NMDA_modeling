@@ -75,7 +75,7 @@ function dvarsdt = modeleqs(t,vars)
     c=1; % membrane capacitance in microF/cm^2
     g_k=9;  % max conductance of K-dr current (mS/cm^2)
     g_na=35; % max conductance of Na current (mS/cm^2)
-    g_l=0.282; % max conductance of membrane leak current (mS/cm^2)
+    g_l=1; % max conductance of membrane leak current (mS/cm^2)
     v_k=-90; % reversal potential of K-dr current
     v_na=55; % reversal potential of Na current
     v_l=-65; % reversal potential of leak current
@@ -96,13 +96,13 @@ function dvarsdt = modeleqs(t,vars)
     end
 
     % post-synaptic current 1 ampa current
-    g_syn1=0.195;   % max conductance  (mS/cm^2)
-    tau_d1=2; tau_r1=0.5; % time constants for decay and rise of synaptic current (ms)
+    g_syn1=0.400;   % max conductance  (mS/cm^2)
+    tau_d1=32; tau_r1=1; % time constants for decay and rise of synaptic current (ms)
     
     % post-synaptic current 2 nmda currnet
     % g_syn2=0.100;   % max conductance  (mS/cm^2) % added this to function
     % call instead
-    tau_d2=62; tau_r2=33; % time constants for decay and rise of synaptic current (ms)
+    tau_d2=200; tau_r2=30; % time constants for decay and rise of synaptic current (ms)
        
     dvdt = (g_k*n^4*(v_k-v) + g_na*m_inf(v)^3*h*(v_na-v) + ...
            g_l*(v_l-v) - g_syn1*s1*v - g_syn2*s2*v +i_ext)/c;
