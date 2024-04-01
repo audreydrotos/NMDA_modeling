@@ -1,4 +1,4 @@
-function [rise_time_10_90, decay_tau] = calcNMDAriseAndDecay(v, t)
+function [rise_time_10_90, decay_tau_1, decay_tau_2] = calcNMDAriseAndDecay(v, t)
 
 % find the kinetics of this response
 % first pull out v at the time points we care about
@@ -29,7 +29,7 @@ index_90 = find(epsp >= amplitude_90 & time >= time(index_start), 1, 'first');
 rise_time_10_90 = time(index_90) - time(index_10);
 
 % Find the index for time 800 where decay fit should end
-index_end = find(time >= 700, 1, 'first');
+index_end = find(time >= 800, 1, 'first');
 
 % For decay Tau, fit exponential decay to the falling phase after the peak
 % We assume that the decay phase starts immediately after the peak
@@ -37,15 +37,19 @@ x_decay = time(index_peak:index_end);  % Time points during decay
 y_decay = epsp(index_peak:index_end);  % EPSP values during decay
 
 % Perform the fit using a single-term exponential model
-fit_type = 'exp1';
-[decay_fit, ~] = fit(x_decay, y_decay, fit_type);
+fit_type = 'exp2';
+[decay_fit, gof] = fit(x_decay, y_decay, fit_type);
 
 % Extract the tau (time constant) from the fit parameters
-decay_tau = -1 / decay_fit.b;
+decay_tau_1 = -1 / decay_fit.b;  % This gives you the first decay time constant
+decay_tau_2 = -1 / decay_fit.d;  % This gives you the second decay time constant
+
+% Display the decay constants
+fprintf('The first decay time constant (tau_1) of the EPSP is %f ms\n', decay_tau_1);
+fprintf('The second decay time constant (tau_2) of the EPSP is %f ms\n', decay_tau_2);
 
 % Display results
 fprintf('The 10-90%% rise time of the EPSP is %f ms\n', rise_time_10_90);
-fprintf('The decay tau of the EPSP is %f ms\n', decay_tau);
 
 % Plot the data and fit for visualization
 figure;
@@ -53,9 +57,9 @@ plot(time, epsp, 'b-', 'LineWidth', 1.5); % Original data
 hold on;
 plot(decay_fit, x_decay, y_decay, 'g'); % Exponential decay fit
 hold on;
-% plot(time(index_10:index_90), epsp(index_10:index_90), 'r.'); % Highlight rise times
+plot(time(index_10:index_90), epsp(index_10:index_90), 'r.'); % Highlight rise times
 
-legend('EPSP Data', 'Exponential Decay Fit', 'Location', 'Best');
+legend('EPSP Data', 'Decay Points', 'Exponential Decay Fit', 'Location', 'Best');
 xlabel('Time (ms)');
 ylabel('EPSP Amplitude (mV)');
 title('EPSP and Decay Fit');
