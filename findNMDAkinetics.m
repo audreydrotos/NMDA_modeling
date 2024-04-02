@@ -1,20 +1,21 @@
 function [t,v] = findNMDAkinetics()
+
 % WB model neuron with 2 synaptic current inputs
 % WB model is a point neuron so units are in densities (per cm^2 for
 % surface area)
 % To change to a spherical neuron, multiply densities by neuron surface area
 % Parameters are set in function modeleqs below
 
-modFreq = 91; % 2 Hz mod frequency
+modFreq = 2; % 2 Hz mod frequency
  % NMDA conductance (only)
 
 % clear; clf;
 
-t_final=1000; % duration of simulation in msec
+t_final = 1000; % duration of simulation in msec
 tspan = [0 t_final];
 
 % initial conditions for model variables
-v0=-64;
+v0=-65;
 h0=h_inf(v0);
 n0=n_inf(v0);
 s10=0;
@@ -78,7 +79,7 @@ function dvarsdt = modeleqs(t,vars)
     c=1; % membrane capacitance in microF/cm^2
     g_k=9;  % max conductance of K-dr current (mS/cm^2)
     g_na=35; % max conductance of Na current (mS/cm^2)
-    g_l=1; % max conductance of membrane leak current (mS/cm^2)
+    g_l=0.7; % max conductance of membrane leak current (mS/cm^2)
     v_k=-90; % reversal potential of K-dr current
     v_na=55; % reversal potential of Na current
     v_l=-65; % reversal potential of leak current
@@ -99,18 +100,21 @@ function dvarsdt = modeleqs(t,vars)
     end
 
     % post-synaptic current 1 ampa current
-    g_syn1 = 0.100;   % max conductance  (mS/cm^2)
-    tau_d1 = 32; tau_r1 = 1; % time constants for decay and rise of synaptic current (ms) % these are correct! 
-    
+    g_syn1 = 3;   % max conductance  (mS/cm^2)
+    tau_d1 = 35; tau_r1 = 20; % time constants for decay and rise of synaptic current (ms) % these are correct! 
+    % these are correct time constants for the model
+
+    % added above to function call
+
     % post-synaptic current 2 nmda currnet
-    g_syn2 = 0.020;   % max conductance  (mS/cm^2) % added this to function
-    tau_d2=50; tau_r2 = 30; % time constants for decay and rise of synaptic current (ms)
+    g_syn2 = 0.02;   % max conductance  (mS/cm^2) % added this to function
+    tau_d2=100; tau_r2 = 100; % time constants for decay and rise of synaptic current (ms)
     % tau_d2=32; tau_r2 = 1;
 
     dvdt = (g_k*n^4*(v_k-v) + g_na*m_inf(v)^3*h*(v_na-v) + ...
            g_l*(v_l-v) - g_syn1*s1*v - g_syn2*s2*v +i_ext)/c;
-    dhdt = alpha_h(v)*(1-h)-beta_h(v)*h; 
-    dndt = alpha_n(v)*(1-n)-beta_n(v)*n; 
+    dhdt = alpha_h(v)*(1-h)-beta_h(v)*h;
+    dndt = alpha_n(v)*(1-n)-beta_n(v)*n;
     ds1dt = q*(1-s1)/tau_r1-s1/tau_d1;
     ds2dt = q*(1-s2)/tau_r2-s2/tau_d2;
     
