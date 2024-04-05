@@ -102,7 +102,7 @@ function dvarsdt = modeleqs(t,vars)
     % post-synaptic current 2 nmda currnet
     % g_syn2=0.100;   % max conductance  (mS/cm^2) % added this to function
     % call instead
-    tau_d2=200; tau_r2=30; % time constants for decay and rise of synaptic current (ms)
+    tau_d2=992; tau_r2=3.5; % time constants for decay and rise of synaptic current (ms)
        
     dvdt = (g_k*n^4*(v_k-v) + g_na*m_inf(v)^3*h*(v_na-v) + ...
            g_l*(v_l-v) - g_syn1*s1*v - g_syn2*s2*v +i_ext)/c;
