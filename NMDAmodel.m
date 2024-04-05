@@ -1,4 +1,4 @@
-function spiketimes = NMDAmodel(modFreq, g_syn2)
+function spiketimes = NMDAmodel(modFreq, g_syn1, g_syn2)
 % WB model neuron with 2 synaptic current inputs
 % WB model is a point neuron so units are in densities (per cm^2 for
 % surface area)
@@ -38,6 +38,8 @@ s2 = vars(:,5);
 [peaks, indxs]=findpeaks(v,'MINPEAKHEIGHT',-10);
 if ~isempty(indxs) 
     spiketimes=t(indxs);
+else
+    spiketimes = [];
 end
 
 % plot output
@@ -47,17 +49,17 @@ set(gca,'Fontsize',16);
 xlabel('t [ms]','Fontsize',20); ylabel('v [mV]','Fontsize',20);
 
 subplot(4,1,2)
-plot(t,s1,'Color','#0077b6','Linewidth',2)
+plot(t,s1*g_syn1,'Color','#0077b6','Linewidth',2)
 set(gca,'Fontsize',16);
 xlabel('t [ms]','Fontsize',20); ylabel('ampa current gate','Fontsize',16);
 
 subplot(4,1,3)
-plot(t,s2,'Color','#00b4d8','Linewidth',2)
+plot(t,s2*g_syn2,'Color','#00b4d8','Linewidth',2)
 set(gca,'Fontsize',16);
 xlabel('t [ms]','Fontsize',20); ylabel('nmda current gate','Fontsize',16);
 
 subplot(4,1,4)
-plot(t,s1+s2,'Color','#90e0ef','Linewidth',2)
+plot(t,s1*g_syn1+s2*g_syn2,'Color','#90e0ef','Linewidth',2)
 set(gca,'Fontsize',16);
 xlabel('t [ms]','Fontsize',20); ylabel('summed current gate','Fontsize',16);
 
@@ -75,7 +77,7 @@ function dvarsdt = modeleqs(t,vars)
     c=1; % membrane capacitance in microF/cm^2
     g_k=9;  % max conductance of K-dr current (mS/cm^2)
     g_na=35; % max conductance of Na current (mS/cm^2)
-    g_l=1; % max conductance of membrane leak current (mS/cm^2)
+    g_l=0.7; % max conductance of membrane leak current (mS/cm^2)
     v_k=-90; % reversal potential of K-dr current
     v_na=55; % reversal potential of Na current
     v_l=-65; % reversal potential of leak current
@@ -96,12 +98,11 @@ function dvarsdt = modeleqs(t,vars)
     end
 
     % post-synaptic current 1 ampa current
-    g_syn1=0.400;   % max conductance  (mS/cm^2)
+    % g_syn1=0.400;   % max conductance  (mS/cm^2)
     tau_d1=32; tau_r1=1; % time constants for decay and rise of synaptic current (ms)
     
     % post-synaptic current 2 nmda currnet
     % g_syn2=0.100;   % max conductance  (mS/cm^2) % added this to function
-    % call instead
     tau_d2=992; tau_r2=3.5; % time constants for decay and rise of synaptic current (ms)
        
     dvdt = (g_k*n^4*(v_k-v) + g_na*m_inf(v)^3*h*(v_na-v) + ...
