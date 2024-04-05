@@ -6,7 +6,7 @@ function [t,v] = findNMDAkinetics()
 % To change to a spherical neuron, multiply densities by neuron surface area
 % Parameters are set in function modeleqs below
 
-modFreq = 2; % 2 Hz mod frequency
+modFreq = 16; % 2 Hz mod frequency
  % NMDA conductance (only)
 
 % clear; clf;
@@ -90,7 +90,7 @@ function dvarsdt = modeleqs(t,vars)
     T = 1/(modFreq/1000);
 
     % T=50;       % period in msec of repetitive pre-synaptic spikes
-    presyn_spike_width = 1; % (msec) if you choose a very slow synaptic rise time
+    presyn_spike_width = 10; % (msec) if you choose a very slow synaptic rise time
     % constant, you may need to make presyn_spike_width longer to see
     % effects. this was initially 1 i changed it to 4. 
     if mod(t,T) <= presyn_spike_width && t > 10.0
@@ -100,16 +100,15 @@ function dvarsdt = modeleqs(t,vars)
     end
 
     % post-synaptic current 1 ampa current
-    g_syn1 = 3;   % max conductance  (mS/cm^2)
-    tau_d1 = 35; tau_r1 = 20; % time constants for decay and rise of synaptic current (ms) % these are correct! 
+    g_syn1 = 0.1;   % max conductance  (mS/cm^2)
+    tau_d1 = 30; tau_r1 = 1; % time constants for decay and rise of synaptic current (ms) % these are correct! 
     % these are correct time constants for the model
 
     % added above to function call
 
     % post-synaptic current 2 nmda currnet
-    g_syn2 = 0.02;   % max conductance  (mS/cm^2) % added this to function
-    tau_d2=100; tau_r2 = 100; % time constants for decay and rise of synaptic current (ms)
-    % tau_d2=32; tau_r2 = 1;
+    g_syn2 = 0.1;   % max conductance  (mS/cm^2) % added this to function
+    tau_d2=992; tau_r2 = 3.5; % time constants for decay and rise of synaptic current (ms)
 
     dvdt = (g_k*n^4*(v_k-v) + g_na*m_inf(v)^3*h*(v_na-v) + ...
            g_l*(v_l-v) - g_syn1*s1*v - g_syn2*s2*v +i_ext)/c;
