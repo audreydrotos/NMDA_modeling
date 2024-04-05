@@ -1,7 +1,7 @@
 function plotMTFsmodel()
 
 % what NMDA conductances do we want to use?
-g_syn2_list = [0 0.100];
+g_syn2_list = [0.10];
 
 % set params as the same we ran for the fMod
 fModStart = 16;
