@@ -1,4 +1,5 @@
-function spiketimes = NMDAmodel(modFreq, g_syn1, g_syn2)
+function spiketimes = NMDAmodel(modFreq, g_syn1, g_syn2, g_l)
+
 % WB model neuron with 2 synaptic current inputs
 % WB model is a point neuron so units are in densities (per cm^2 for
 % surface area)
@@ -43,25 +44,26 @@ else
 end
 
 % plot output
-subplot(4,1,1);
-plot(t,v,'Color', '#03045e','Linewidth',2);
-set(gca,'Fontsize',16);
-xlabel('t [ms]','Fontsize',20); ylabel('v [mV]','Fontsize',20);
-
-subplot(4,1,2)
-plot(t,s1*g_syn1,'Color','#0077b6','Linewidth',2)
-set(gca,'Fontsize',16);
-xlabel('t [ms]','Fontsize',20); ylabel('ampa current gate','Fontsize',16);
-
-subplot(4,1,3)
-plot(t,s2*g_syn2,'Color','#00b4d8','Linewidth',2)
-set(gca,'Fontsize',16);
-xlabel('t [ms]','Fontsize',20); ylabel('nmda current gate','Fontsize',16);
-
-subplot(4,1,4)
-plot(t,s1*g_syn1+s2*g_syn2,'Color','#90e0ef','Linewidth',2)
-set(gca,'Fontsize',16);
-xlabel('t [ms]','Fontsize',20); ylabel('summed current gate','Fontsize',16);
+% subplot(4,1,1);
+% plot(t,v,'Color', '#03045e','Linewidth',2);
+% set(gca,'Fontsize',16);
+% xlabel('t [ms]','Fontsize',20); ylabel('v [mV]','Fontsize',20);
+% ylim([-65 20])
+% 
+% subplot(4,1,2)
+% plot(t,s1*g_syn1,'Color','#0077b6','Linewidth',2)
+% set(gca,'Fontsize',16);
+% xlabel('t [ms]','Fontsize',20); ylabel('ampa current gate','Fontsize',16);
+% 
+% subplot(4,1,3)
+% plot(t,s2*g_syn2,'Color','#00b4d8','Linewidth',2)
+% set(gca,'Fontsize',16);
+% xlabel('t [ms]','Fontsize',20); ylabel('nmda current gate','Fontsize',16);
+% 
+% subplot(4,1,4)
+% plot(t,s1*g_syn1+s2*g_syn2,'Color','#90e0ef','Linewidth',2)
+% set(gca,'Fontsize',16);
+% xlabel('t [ms]','Fontsize',20); ylabel('summed current gate','Fontsize',16);
 
 function dvarsdt = modeleqs(t,vars)
 % WB model point neuron equations
@@ -77,7 +79,7 @@ function dvarsdt = modeleqs(t,vars)
     c=1; % membrane capacitance in microF/cm^2
     g_k=9;  % max conductance of K-dr current (mS/cm^2)
     g_na=35; % max conductance of Na current (mS/cm^2)
-    g_l=0.7; % max conductance of membrane leak current (mS/cm^2)
+    % g_l=0.7; % max conductance of membrane leak current (mS/cm^2)
     v_k=-90; % reversal potential of K-dr current
     v_na=55; % reversal potential of Na current
     v_l=-65; % reversal potential of leak current
