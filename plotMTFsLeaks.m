@@ -14,7 +14,7 @@ logSpacedVector = logspace(startExp, endExp, numPoints);
 %% what AMPA & NMDA conductances do we want to use?
 g_syn1_list = [0.05, 0.185, 0.68, 2.8, 300];
 g_syn2_list = g_syn1_list/4; % nmda is 25% of AMPA
-g_l_list = logSpacedVector; % VIP neuron
+g_l_list = logSpacedVector; 
 
 % set params as the same we ran for the fMod
 fModStart = 16;
@@ -44,7 +44,7 @@ for j = 1:length(g_l_list)
         fm = fMod(i);
     
         % convert spike times to radians to calculate vector strength
-        spikeRads = mod(spiketimes, 1/fm) * 2 * pi * fm;
+        spikeRads = mod(spiketimes/1000, 1/fm) * 2 * pi * fm;
         
         % second, calculate vector strength. p2 of GOldberg and Brown 1969
         % method

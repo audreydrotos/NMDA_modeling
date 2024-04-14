@@ -37,7 +37,7 @@ for j = 1:length(g_syn2_list)
         fm = fMod(i);
     
         % convert spike times to radians to calculate vector strength
-        spikeRads = mod(spiketimes, 1/fm) * 2 * pi * fm;
+        spikeRads = mod(spiketimes/1000, 1/fm) * 2 * pi * fm; % spike times need to be in s for this and code gives in ms
         
         % second, calculate vector strength. p2 of GOldberg and Brown 1969
         % method
