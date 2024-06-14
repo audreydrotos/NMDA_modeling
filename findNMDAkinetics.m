@@ -6,7 +6,7 @@ function [t,v] = findNMDAkinetics()
 % To change to a spherical neuron, multiply densities by neuron surface area
 % Parameters are set in function modeleqs below
 
-modFreq = 16; % 2 Hz mod frequency
+modFreq = 2; % 2 Hz mod frequency
  % NMDA conductance (only)
 
 % clear; clf;
@@ -101,14 +101,14 @@ function dvarsdt = modeleqs(t,vars)
 
     % post-synaptic current 1 ampa current
     g_syn1 = 0.1;   % max conductance  (mS/cm^2)
-    tau_d1 = 30; tau_r1 = 1; % time constants for decay and rise of synaptic current (ms) % these are correct! 
+    tau_d1 = 32; tau_r1 = 1.3; % time constants for decay and rise of synaptic current (ms) % these are correct! 
     % these are correct time constants for the model
 
     % added above to function call
 
     % post-synaptic current 2 nmda currnet
-    g_syn2 = 0.1;   % max conductance  (mS/cm^2) % added this to function
-    tau_d2=992; tau_r2 = 3.5; % time constants for decay and rise of synaptic current (ms)
+    g_syn2 = 0.025;   % max conductance  (mS/cm^2) % added this to function
+    tau_d2 = 115; tau_r2 = 70; % time constants for decay and rise of synaptic current (ms)
 
     dvdt = (g_k*n^4*(v_k-v) + g_na*m_inf(v)^3*h*(v_na-v) + ...
            g_l*(v_l-v) - g_syn1*s1*v - g_syn2*s2*v +i_ext)/c;

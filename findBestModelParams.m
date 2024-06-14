@@ -7,8 +7,8 @@ function [rise_time_10_90_list,decay_tau_1_list, current_params] = findBestModel
 
 % function troubleshooting
 g_syn1_list = 1; % hold constant
-tau_d1_list = 10:5:50;
-tau_r1_list = 20:20:500;
+tau_d1_list = 32;
+tau_r1_list = 4.5;
 
 % lists to save vars
 rise_time_10_90_list = [];
