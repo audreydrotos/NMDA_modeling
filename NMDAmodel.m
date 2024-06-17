@@ -19,6 +19,9 @@ s10=0;
 s20=0;
 ICs = [v0; h0; n0; s10; s20];
 
+% calculate input times
+inputs = createInputVector(modFreq);
+
 % Call the solver ode15s to numerically simulate the model
 % output: t = time stamp vector. 
 % vars = matrix with column 1 = voltage v, 
@@ -26,7 +29,7 @@ ICs = [v0; h0; n0; s10; s20];
 % column 3 = n K-dr activation gate,
 % column 4 = s synaptic current gate
 options = odeset('MaxStep',1);
-[t,vars] = ode15s(@modeleqs, tspan, ICs, options);
+[t,vars,inputs] = ode15s(@modeleqs, tspan, ICs, options);
 
 % vectors of model variables at each time step:
 v = vars(:,1);
@@ -50,22 +53,32 @@ set(gca,'Fontsize',16);
 xlabel('t [ms]','Fontsize',20); ylabel('v [mV]','Fontsize',20);
 ylim([-65 20])
 
+% subplot(4,1,2)
+% plot(t,s1*g_syn1,'Color','#0077b6','Linewidth',2)
+% set(gca,'Fontsize',16);
+% xlabel('t [ms]','Fontsize',20); ylabel('ampa current gate','Fontsize',16);
+% 
+% subplot(4,1,3)
+% plot(t,s2*g_syn2,'Color','#00b4d8','Linewidth',2)
+% set(gca,'Fontsize',16);
+% xlabel('t [ms]','Fontsize',20); ylabel('nmda current gate','Fontsize',16);
+
 subplot(4,1,2)
-plot(t,s1*g_syn1,'Color','#0077b6','Linewidth',2)
+plot(t,s1,'Color','#0077b6','Linewidth',2)
 set(gca,'Fontsize',16);
 xlabel('t [ms]','Fontsize',20); ylabel('ampa current gate','Fontsize',16);
 
 subplot(4,1,3)
-plot(t,s2*g_syn2,'Color','#00b4d8','Linewidth',2)
+plot(t,s2,'Color','#00b4d8','Linewidth',2)
 set(gca,'Fontsize',16);
 xlabel('t [ms]','Fontsize',20); ylabel('nmda current gate','Fontsize',16);
 
 subplot(4,1,4)
-plot(t,s1*g_syn1+s2*g_syn2,'Color','#90e0ef','Linewidth',2)
+plot(t,s1+s2,'Color','#90e0ef','Linewidth',2)
 set(gca,'Fontsize',16);
 xlabel('t [ms]','Fontsize',20); ylabel('summed current gate','Fontsize',16);
 
-function dvarsdt = modeleqs(t,vars)
+function dvarsdt = modeleqs(t,vars,inputs)
 % WB model point neuron equations
 % activation gating of Na current is instantaneous function of voltage
 
@@ -87,7 +100,8 @@ function dvarsdt = modeleqs(t,vars)
     i_ext=0;  % external applied current to neuron
     
     % pre-synaptic spikes
-    T = 1/(modFreq/1000);
+    % T = 1/(modFreq/1000);
+
 
     % T=50;       % period in msec of repetitive pre-synaptic spikes
     presyn_spike_width = 1.0; % (msec) if you choose a very slow synaptic rise time
@@ -105,8 +119,9 @@ function dvarsdt = modeleqs(t,vars)
     
     % post-synaptic current 2 nmda currnet
     % g_syn2=0.100;   % max conductance  (mS/cm^2) % added this to function
-    tau_d2=115; tau_r2=70; % time constants for decay and rise of synaptic current (ms)
-       
+    % tau_d2=115; tau_r2=70; % time constants for decay and rise of synaptic current (ms)
+    tau_d2=65; tau_r2=3.5;
+
     dvdt = (g_k*n^4*(v_k-v) + g_na*m_inf(v)^3*h*(v_na-v) + ...
            g_l*(v_l-v) - g_syn1*s1*v - g_syn2*s2*v +i_ext)/c;
     dhdt = alpha_h(v)*(1-h)-beta_h(v)*h; 
