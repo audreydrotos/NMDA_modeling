@@ -42,18 +42,18 @@ y_decay = epsp(index_peak+5:index_end);  % EPSP values during decay
 % fit_type = 'exp2';
 % [decay_fit, gof] = fit(x_decay, y_decay, fit_type);
 
-fit_type = 'exp1';
+fit_type = 'exp2';
 [decay_fit, gof] = fit(x_decay, y_decay, fit_type);
 
 % % extract the tau (time constant) from the fit parameters
-% decay_tau_1 = -1 / decay_fit.b;  % This gives you the first decay time constant
-% decay_tau_2 = -1 / decay_fit.d;  % This gives you the second decay time constant
-
 decay_tau_1 = -1 / decay_fit.b;  % This gives you the first decay time constant
+decay_tau_2 = -1 / decay_fit.d;  % This gives you the second decay time constant
+
+% decay_tau_1 = -1 / decay_fit.b;  % This gives you the first decay time constant
 
 % Display the decay constants
 fprintf('The first decay time constant (tau_1) of the EPSP is %f ms\n', decay_tau_1);
-% fprintf('The second decay time constant (tau_2) of the EPSP is %f ms\n', decay_tau_2);
+fprintf('The second decay time constant (tau_2) of the EPSP is %f ms\n', decay_tau_2);
 
 % Display results
 fprintf('The 10-90%% rise time of the EPSP is %f ms\n', rise_time_10_90);
