@@ -1,9 +1,9 @@
 function plotMTFsmodel()
 
 % what AMPA & NMDA conductances do we want to use?
-g_syn1 = 0.2;
-g_syn2_list = [0 0.05];
-g_l = 0.7 % VIP neuron
+g_syn1 = 0.4;
+g_syn2_list = [0 0.1];
+g_l = 0.7; % VIP neuron
 
 % set params as the same we ran for the fMod
 fModStart = 16;
