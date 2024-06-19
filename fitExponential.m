@@ -1,4 +1,4 @@
-function [k, yInf, y0, yFit] = fitExponential(x, y)
+ function [k, yInf, y0, yFit] = fitExponential(x, y)
 
 % FITEXPONENTIAL fits a time series to a single exponential curve. 
 % [k, yInf, y0] = fitExponential(x, y)
