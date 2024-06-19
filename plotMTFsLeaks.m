@@ -13,7 +13,7 @@ logSpacedVector = logspace(startExp, endExp, numPoints);
 
 %% what AMPA & NMDA conductances do we want to use?
 g_syn1_list = [0.05, 0.185, 0.68, 2.8, 300];
-g_syn2_list = g_syn1_list/4; % nmda is 25% of AMPA
+g_syn2_list = g_syn1_list/2; % nmda is 50% of AMPA
 g_l_list = logSpacedVector; 
 
 % set params as the same we ran for the fMod
