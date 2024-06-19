@@ -29,7 +29,10 @@ inputs = createInputVector(modFreq);
 % column 3 = n K-dr activation gate,
 % column 4 = s synaptic current gate
 options = odeset('MaxStep',1);
-[t,vars,inputs] = ode15s(@modeleqs, tspan, ICs, options);
+% [t,vars] = ode15s(@modeleqs, tspan, ICs, options);
+
+% pass additional parameters using an anonymous function
+[t, vars] = ode15s(@(t,vars) modeleqs(t, vars, inputs), tspan, ICs, options);
 
 % vectors of model variables at each time step:
 v = vars(:,1);
@@ -102,16 +105,31 @@ function dvarsdt = modeleqs(t,vars,inputs)
     % pre-synaptic spikes
     % T = 1/(modFreq/1000);
 
-
     % T=50;       % period in msec of repetitive pre-synaptic spikes
     presyn_spike_width = 1.0; % (msec) if you choose a very slow synaptic rise time
     % constant, you may need to make presyn_spike_width longer to see
     % effects. this was initially 1 i changed it to 4. 
-    if mod(t,T) <= presyn_spike_width && t > 10.0
-       q=1;
+    % calculate times for input spikes
+    
+    % calculate the input spike right before the first spike, if there is
+    % one
+    prior_inputs = inputs(inputs < t);
+    if ~isempty(prior_inputs)
+        maximum = max(prior_inputs);
+        diff = t - maximum;
+        if diff <= presyn_spike_width && t > 10.0
+            q = 1; % during the spike
+        else
+            q = 0; % not during the spike
+        end
     else
-       q=0;
+        q = 1; % during the first spike
     end
+    % if mod(t,T) <= presyn_spike_width && t > 10.0
+    %    q=1;
+    % else
+    %    q=0;
+    % end
 
     % post-synaptic current 1 ampa current
     % g_syn1=0.400;   % max conductance  (mS/cm^2)
