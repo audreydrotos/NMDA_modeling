@@ -106,7 +106,7 @@ function dvarsdt = modeleqs(t,vars,inputs)
     % T = 1/(modFreq/1000);
 
     % T=50;       % period in msec of repetitive pre-synaptic spikes
-    presyn_spike_width = 1.0; % (msec) if you choose a very slow synaptic rise time
+    presyn_spike_width = 2; % (msec) if you choose a very slow synaptic rise time
     % constant, you may need to make presyn_spike_width longer to see
     % effects. this was initially 1 i changed it to 4. 
     % calculate times for input spikes
@@ -123,7 +123,7 @@ function dvarsdt = modeleqs(t,vars,inputs)
             q = 0; % not during the spike
         end
     else
-        q = 1; % during the first spike
+        q = 0; % before spike
     end
     % if mod(t,T) <= presyn_spike_width && t > 10.0
     %    q=1;
