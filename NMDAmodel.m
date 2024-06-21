@@ -56,25 +56,27 @@ set(gca,'Fontsize',16);
 xlabel('t [ms]','Fontsize',20); ylabel('v [mV]','Fontsize',20);
 ylim([-65 20])
 
+subplot(4,1,2)
+plot(t,s1*g_syn1,'Color','#0077b6','Linewidth',2)
+set(gca,'Fontsize',16);
+xlabel('t [ms]','Fontsize',20); ylabel('ampa current gate','Fontsize',16);
+ylim([0 0.2])
+
+subplot(4,1,3)
+plot(t,s2*g_syn2,'Color','#00b4d8','Linewidth',2)
+set(gca,'Fontsize',16);
+xlabel('t [ms]','Fontsize',20); ylabel('nmda current gate','Fontsize',16);
+ylim([0 0.2])
+
 % subplot(4,1,2)
-% plot(t,s1*g_syn1,'Color','#0077b6','Linewidth',2)
+% plot(t,s1,'Color','#0077b6','Linewidth',2)
 % set(gca,'Fontsize',16);
 % xlabel('t [ms]','Fontsize',20); ylabel('ampa current gate','Fontsize',16);
 % 
 % subplot(4,1,3)
-% plot(t,s2*g_syn2,'Color','#00b4d8','Linewidth',2)
+% plot(t,s2,'Color','#00b4d8','Linewidth',2)
 % set(gca,'Fontsize',16);
 % xlabel('t [ms]','Fontsize',20); ylabel('nmda current gate','Fontsize',16);
-
-subplot(4,1,2)
-plot(t,s1,'Color','#0077b6','Linewidth',2)
-set(gca,'Fontsize',16);
-xlabel('t [ms]','Fontsize',20); ylabel('ampa current gate','Fontsize',16);
-
-subplot(4,1,3)
-plot(t,s2,'Color','#00b4d8','Linewidth',2)
-set(gca,'Fontsize',16);
-xlabel('t [ms]','Fontsize',20); ylabel('nmda current gate','Fontsize',16);
 
 subplot(4,1,4)
 plot(t,s1+s2,'Color','#90e0ef','Linewidth',2)
