@@ -1,8 +1,8 @@
-function plotMTFsmodel()
+function [spikeCounts_AMPA, synchrony_AMPA, phase_AMPA, spikeCounts_NMDA, synchrony_NMDA, phase_NMDA] = plotMTFsmodel()
 
 % what AMPA & NMDA conductances do we want to use?
-g_syn1 = 0.3;
-g_syn2_list = [0 0.3];
+g_syn1 = 0.25;
+g_syn2_list = [0 g_syn1*0.25];
 g_l = 0.7; % VIP neuron
 
 % set params as the same we ran for the fMod
@@ -31,6 +31,7 @@ for j = 1:length(g_syn2_list)
     for i = 1:numFreqs
         % calculate the number of spikes at that fMod
         spiketimes = NMDAmodel(fMod(i), g_syn1, g_syn2_list(j), g_l);
+        spiketimes = spiketimes - 10;
         count = length(spiketimes);
     
         % pull out the fMod 
