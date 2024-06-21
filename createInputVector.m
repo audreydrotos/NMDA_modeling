@@ -10,7 +10,7 @@ inputs = 0:1000/modFreq:t_final;
 % Add +/- 3ms jitter to each input
 % First, generate vector of n = modFreq numbers from a gaussian
 % distribution
-jitter = randn(1, length(inputs))*1;
+jitter = randn(1, length(inputs))*2;
 
 % Add these together
 inputs = inputs + jitter;
