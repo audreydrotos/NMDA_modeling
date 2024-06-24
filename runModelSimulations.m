@@ -19,6 +19,7 @@ fMod = 2 .^ [log2(fModStart):1/fModSteps:log2(fModEnd)];
 numFreqs = length(fMod);
 
 for i = 1:5
+    rng(i)
     [spikeCounts_AMPA, synchrony_AMPA, phase_AMPA, spikeCounts_NMDA, synchrony_NMDA, phase_NMDA] = plotMTFsmodel();
 
     % add to vectors
