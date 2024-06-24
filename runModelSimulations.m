@@ -28,6 +28,8 @@ for i = 1:5
     XspikeCounts_NMDA(i,:) = spikeCounts_NMDA;
     Xsynchrony_NMDA(i,:) = synchrony_NMDA;
     Xphase_NMDA(i,:) = phase_NMDA;
+
+    disp(['Running iteration: ' num2str(i)]);
 end
 
 % average across each column
